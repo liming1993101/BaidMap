@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lm.lmmapdemo.ui.NavigationActivity">
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+       <Button
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="导航"
+           android:id="@+id/navigation_bt"/>
+        <Button
+            android:id="@+id/pre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="上"/>
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/pre"
+            android:layout_alignTop="@+id/pre"
+            android:text="下"/>
+        <Button
+            android:id="@+id/plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/next"
+            android:layout_alignTop="@+id/next"
+            android:text="路线详情"/>
+    </RelativeLayout>
+</FrameLayout>

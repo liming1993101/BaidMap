@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <AutoCompleteTextView
+        android:id="@+id/origin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="我的位置"
+        android:completionThreshold="1"/>
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/end_point"
+        android:text="你要去的地方"
+        android:layout_below="@+id/origin"
+        android:completionThreshold="1"/>
+    <Button
+        android:id="@+id/drive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/end_point"
+        android:text="驾车搜索"/>
+    <Button
+        android:id="@+id/public_transportation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/end_point"
+        android:layout_toRightOf="@+id/drive"
+        android:text="公共交通"/>
+    <Button
+        android:id="@+id/walk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/end_point"
+        android:layout_toRightOf="@+id/public_transportation"
+        android:text="走吧骚年"/>
+
+
+</RelativeLayout>
