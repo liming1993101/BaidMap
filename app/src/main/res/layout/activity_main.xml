@@ -14,13 +14,13 @@
         <Button
             android:id="@+id/mode_map"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:text="普通"
             android:textSize="16sp"/>
         <Button
             android:id="@+id/mode_map1"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="模式"
             android:textSize="17sp"/>

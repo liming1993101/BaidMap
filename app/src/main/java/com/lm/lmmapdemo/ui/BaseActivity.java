@@ -10,13 +10,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 import com.lm.lmmapdemo.R;
 
 /**
  * Created by Administrator on 2016/4/29.
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
+
+    private MyLocationListener myListener;
+    private LocationClient mLocationClient;
     private  SDKReceiver mReceiver;
     public class  SDKReceiver extends BroadcastReceiver
     {
@@ -35,6 +49,19 @@ public class BaseActivity extends AppCompatActivity {
 
         }
     }
+    public void opGps()
+    {
+        mLocationClient=new LocationClient(this);
+        myListener=new MyLocationListener();
+        mLocationClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);// 打开gps
+        option.setIsNeedAddress(true);
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000); //设置发起定位请求的间隔时间为1000ms
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,5 +79,22 @@ public class BaseActivity extends AppCompatActivity {
         super.onStart();
 
     }
+    public class MyLocationListener implements BDLocationListener {
 
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null)
+                return;
+            getLocation(location);
+
+        }
+    }
+  public abstract void getLocation(BDLocation location);
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLocationClient.stop();
+    }
 }

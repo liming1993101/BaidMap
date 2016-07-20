@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.lm.lmmapdemo"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -25,9 +25,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.2.1'
+    compile project(':searchview')
+    compile 'com.android.support:cardview-v7:23.4.0'
 ////    compile files('libs/baidumapapi_v3_5_0.jar')
 ////    compile files('libs/locSDK_6.13.jar')
-compile files('libs/BaiduLBS_Android.jar')
+//compile files('libs/BaiduLBS_Android.jar')
 }

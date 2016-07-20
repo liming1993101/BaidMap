@@ -3,12 +3,13 @@ package com.lm.lmmapdemo.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.lm.lmmapdemo.R;
 
-public class HomeActivity extends BaseActivity implements View.OnClickListener{
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button mBtMap;
     private Button mBtNavigation;
@@ -34,11 +35,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId())
         {
-            case R.id.map_view1:
-                startActivity(new Intent(this,MainActivity.class));
+            case R.id.mode_map1:
+                Log.v("事件地图","没执行");
+                startActivity(new Intent(HomeActivity.this,MainActivity.class));
+
                 break;
             case R.id.mode_map2:
-                startActivity(new Intent(this,NavigationActivity.class));
+               startActivity(new Intent(this,NavigationActivity.class));
                 break;
         }
 

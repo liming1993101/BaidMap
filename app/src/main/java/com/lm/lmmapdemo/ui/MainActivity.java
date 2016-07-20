@@ -29,9 +29,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,T
     private Button mModeBt;
     private Button mModeBt1;
     private BaiduMap mBaiduMap;
-    private LocationClient mLocationClient;
+
     private boolean isFirstLoc = true;
-    private MyLocationListener mListener;
     private TitlePopup titlePopup;
     private BitmapDescriptor mCurrentMarker;
     @Override
@@ -40,6 +39,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,T
         setContentView(R.layout.activity_main);
         initView();
         initData();
+    }
+
+    @Override
+    public void getLocation(BDLocation location) {
+
+        MyLocationData locData = new MyLocationData.Builder()
+                .accuracy(location.getRadius())
+                // 此处设置开发者获取到的方向信息，顺时针0-360
+                .direction(100).latitude(location.getLatitude())
+                .longitude(location.getLongitude()).build();
+        mBaiduMap.setMyLocationData(locData);
+        if (isFirstLoc) {
+            isFirstLoc = false;
+            LatLng ll = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+            mBaiduMap.animateMapStatus(u);
+        }
     }
 
     private void initView() {
@@ -55,15 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,T
         mLocatinMode= MyLocationConfiguration.LocationMode.NORMAL;
         mBaiduMap=mMapView.getMap();
         mBaiduMap.setMyLocationEnabled(true);//开启定位图层；
-        mLocationClient=new LocationClient(this);
-        mListener=new MyLocationListener();
-        mLocationClient.registerLocationListener(mListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);// 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000); //设置发起定位请求的间隔时间为1000ms
-        mLocationClient.setLocOption(option);
-        mLocationClient.start();
+        opGps();
         titlePopup = new TitlePopup(this, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         titlePopup.addAction(new ActionItem(this,"正常"));
@@ -71,7 +80,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,T
         titlePopup.addAction(new ActionItem(this, "交通"));
         titlePopup.addAction(new ActionItem(this, "热力"));
         titlePopup.setItemOnClickListener(this);
-
 
     }
 
@@ -134,29 +142,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,T
     /**
      * 定位SDK监听函数
      */
-    public class MyLocationListener implements BDLocationListener {
 
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            // map view 销毁后不在处理新接收的位置
-            if (location == null || mMapView == null)
-                return;
-
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            mBaiduMap.setMyLocationData(locData);
-            if (isFirstLoc) {
-                isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-                mBaiduMap.animateMapStatus(u);
-            }
-        }
-    }
     @Override
     protected void onPause() {
         // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
@@ -173,8 +159,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,T
 
     @Override
     protected void onDestroy() {
-        // 退出时销毁定位
-        mLocationClient.stop();
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
